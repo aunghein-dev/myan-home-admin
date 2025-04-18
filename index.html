@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>myanFlix Admin Panel</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="favicon.png" />
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="style/home.css" />
+  </head>
+  <body class="bg-gray-900 text-white font-sans">
+    <div class="container mx-auto p-6">
+      <div class="flex flex-col items-center">
+        <img
+          class="h-11 w-31 object-cover mb-4"
+          src="images/logo.png"
+          alt="Logo"
+          style="width: 100px"
+        />
+        <h3
+          class="text-3xl font-bold"
+          style="margin-bottom: 20px; margin-top: -20px"
+        >
+          Admin Panel
+        </h3>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="mb-6">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search movies..."
+          class="w-full p-2 rounded bg-gray-700 text-white"
+        />
+      </div>
+
+      <!-- Passcode Gate -->
+      <div
+        id="passcodeGate"
+        class="bg-gray-800 p-6 rounded-lg shadow-md mb-10 flex flex-col items-center justify-center"
+      >
+        <h2 class="text-xl font-semibold mb-4 text-center">
+          Enter Admin Passcode
+        </h2>
+        <input
+          type="password"
+          id="passcodeInput"
+          placeholder="Enter passcode"
+          class="p-2 rounded bg-gray-700 text-white w-full max-w-xs mb-4 text-center"
+        />
+        <button
+          onclick="verifyPasscode()"
+          class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-semibold transition duration-200"
+        >
+          Unlock Form
+        </button>
+      </div>
+
+      <!-- Movie Entry Form (Initially Hidden) -->
+      <div
+        id="movieFormSection"
+        class="bg-gray-800 p-6 rounded-lg shadow-md mb-10 hidden"
+      >
+        <h2 class="text-xl font-semibold mb-4">Add or Edit Movie</h2>
+        <form id="movieForm" class="grid grid-cols-2 gap-4">
+          <input
+            class="p-2 rounded bg-gray-700"
+            type="number"
+            placeholder="TMDB ID"
+            id="tmdbId"
+            required
+          />
+          <input
+            class="p-2 rounded bg-gray-700"
+            type="text"
+            placeholder="Movie Name"
+            id="movieName"
+          />
+          <input
+            class="p-2 rounded bg-gray-700"
+            type="text"
+            placeholder="Provider Name"
+            id="providerName"
+          />
+          <input
+            class="p-2 rounded bg-gray-700"
+            type="url"
+            placeholder="Shared Link"
+            id="sharedLink"
+          />
+          <input
+            class="p-2 rounded bg-gray-700"
+            type="text"
+            placeholder="Resolution"
+            id="resolution"
+          />
+          <input
+            class="p-2 rounded bg-gray-700"
+            type="text"
+            placeholder="File Size"
+            id="fileSize"
+          />
+          <button
+            type="submit"
+            class="col-span-2 mt-4 bg-red-600 hover:bg-red-700 py-2 rounded"
+          >
+            Save Movie
+          </button>
+        </form>
+      </div>
+
+      <!-- Movie List Table -->
+      <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold mb-4">Existing Movies</h2>
+
+        <div class="overflow-x-auto w-full scrollbar-hide min-h-[400px]">
+          <table class="w-full table-auto text-left min-w-[900px]">
+            <thead>
+              <tr class="text-red-400 bg-[#1c1c1c]">
+                <th class="p-3">ID</th>
+                <th class="p-3">Name</th>
+                <th class="p-3">Provider</th>
+                <th class="p-3">Resolution</th>
+                <th class="p-3">Size</th>
+                <th class="p-3">Link</th>
+                <th class="p-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="movieTable" class="text-gray-200 min-h-[300px]"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div
+      id="deleteModal"
+      class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50"
+    >
+      <div
+        class="bg-[#1f1f1f] p-8 rounded-2xl shadow-2xl w-[90%] max-w-md text-center"
+      >
+        <h2 class="text-2xl font-bold text-red-500 mb-3">Delete Movie</h2>
+        <p class="text-gray-300 mb-6">
+          Are you sure you want to delete this movie?
+        </p>
+        <div class="flex justify-center gap-4">
+          <button
+            onclick="confirmDelete()"
+            class="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-full font-semibold"
+          >
+            Yes, Delete
+          </button>
+          <button
+            onclick="closeDeleteModal()"
+            class="bg-gray-600 hover:bg-gray-700 px-6 py-2 rounded-full font-semibold"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div
+      id="toast"
+      class="fixed bottom-8 right-8 bg-[#e50914] text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-4 text-sm opacity-0 pointer-events-none transform translate-y-6 scale-95 transition-all duration-300 z-50"
+    >
+      <svg
+        class="w-5 h-5 text-white flex-shrink-0"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M13 16h-1v-4h-1m1-4h.01M12 20c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z"
+        />
+      </svg>
+      <span id="toastMsg" class="font-semibold tracking-wide leading-tight"
+        >Toast message goes here</span
+      >
+    </div>
+
+    <!-- Scripts -->
+    <script>
+      document.getElementById("currentYear").textContent =
+        new Date().getFullYear();
+
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        const msg = document.getElementById("toastMsg");
+
+        msg.textContent = message;
+
+        toast.classList.remove(
+          "opacity-0",
+          "translate-y-6",
+          "scale-95",
+          "pointer-events-none"
+        );
+        toast.classList.add("opacity-100", "translate-y-0", "scale-100");
+
+        setTimeout(() => {
+          toast.classList.remove("opacity-100", "translate-y-0", "scale-100");
+          toast.classList.add(
+            "opacity-0",
+            "translate-y-6",
+            "scale-95",
+            "pointer-events-none"
+          );
+        }, 3500);
+      }
+
+      function verifyPasscode() {
+        const input = document.getElementById("passcodeInput").value;
+        const correctPasscode = "flixadmin"; // Set your secure passcode here
+
+        if (input === correctPasscode) {
+          document.getElementById("passcodeGate").classList.add("hidden");
+          document
+            .getElementById("movieFormSection")
+            .classList.remove("hidden");
+          showToast("\uD83D\uDD13 Access granted");
+        } else {
+          showToast("\u274C Incorrect passcode");
+        }
+      }
+    </script>
+    <script src="script/home.js"></script>
+  </body>
+</html>
