@@ -76,8 +76,6 @@ function editMovie(movie) {
   document.getElementById("sharedLink").value = movie.sharedLink;
   document.getElementById("resolution").value = movie.resolutionDesc;
   document.getElementById("fileSize").value = movie.fileSize;
-
-  showToast("Movie updated successfully.");
 }
 
 async function deleteMovie(tmdbId) {
