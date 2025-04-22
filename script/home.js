@@ -1,5 +1,5 @@
 const api = "https://mvlink-backend-webservice.onrender.com/mapi";
-const brokenAPI = "https://mvlink-backend-webservice.onrender.com/brokenlink";
+
 let movies = [];
 
 
@@ -169,11 +169,13 @@ function verifyPasscode() {
 }
 
 let brokenReports = [];
+
+const brokenAPI = "https://mvlink-backend-webservice.onrender.com/linkbroken";
+
 async function fetchBrokenLink(){
     const res = await fetch(`${brokenAPI}/get`);
     brokenReports = await res.json();
     console.log(brokenReports);
-
     renderBrokenLinkSession(brokenReports);
 }
 
