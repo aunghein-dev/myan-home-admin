@@ -47,13 +47,9 @@ document
   .getElementById("movieForm")
   .addEventListener("submit", async (e) => {
     e.preventDefault();
-
-    // Calculate the next available movieId
-    const movieId = Math.max(0, ...movies.map(movie => movie.movieId)) + 1;
-
     const payload = {
-      movieId: movieId, // Correct the syntax here
-      movieName: document.getElementById("movieName").value,
+      movieId: movies.length + 1,
+      moiveName: document.getElementById("movieName").value,
       tmdbId: parseInt(document.getElementById("tmdbId").value),
       sharedLink: document.getElementById("sharedLink").value,
       sharedProviderName: document.getElementById("providerName").value,
@@ -62,8 +58,6 @@ document
       linkUploadDate: new Date().toISOString(),
       linkUpdateDate: new Date().toISOString(),
     };
-
-    console.log(payload);
 
     await fetch(`${api}/movies`, {
       method: "POST",
@@ -74,7 +68,7 @@ document
     fetchMovies();
     e.target.reset();
     showToast("Movie added successfully.");
-});
+  });
 
 function editMovie(movie) {
   document.getElementById("tmdbId").value = movie.tmdbId;
