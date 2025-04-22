@@ -1,6 +1,6 @@
-const api = "https://mvlink-backend-webservice.onrender.com/mapi";
+const api = "https://urgent-stacy-aunghein-dev-843d652b.koyeb.app/mapi";
 const brokenAPI =
-  "https://mvlink-backend-webservice.onrender.com/linkbroken";
+  "https://urgent-stacy-aunghein-dev-843d652b.koyeb.app/linkbroken";
 let movies = [],
   brokenReports = [];
 
