@@ -1,6 +1,6 @@
-const api = "https://urgent-stacy-aunghein-dev-843d652b.koyeb.app/mapi";
+const api = "https://standard-fredelia-aunghein-dev-4fce3106.koyeb.app/mapi";
 const brokenAPI =
-  "https://urgent-stacy-aunghein-dev-843d652b.koyeb.app/linkbroken";
+  "https://standard-fredelia-aunghein-dev-4fce3106.koyeb.app/linkbroken";
 let movies = [],
   brokenReports = [];
 
