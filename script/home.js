@@ -113,6 +113,7 @@ function showToast(message) {
   }, 3500);
 }
 
+/*
 function verifyPasscode() {
   const input = document.getElementById("passcodeInput").value;
   if (input === "admin") {
@@ -125,6 +126,7 @@ function verifyPasscode() {
     showToast("❌ Incorrect passcode");
   }
 }
+  */
 
 async function fetchBrokenLink() {
   const res = await fetch(`${brokenAPI}/get`);
