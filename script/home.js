@@ -37,6 +37,7 @@ function renderMovies(filtered = movies) {
   feather.replace(); // Render feather icons  
 }
 
+
 document.getElementById("movieForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const payload = {
@@ -66,6 +67,7 @@ document.getElementById("movieForm").addEventListener("submit", async (e) => {
   showToast("Movie added successfully.");
 });
 
+
 function editMovie(movie) {
   document.getElementById("tmdbId").value = movie.tmdbId;
   document.getElementById("movieName").value = movie.moiveName;
@@ -82,7 +84,10 @@ async function deleteMovie(tmdbId) {
   }
 }
 
+
 let movieToDelete = null;
+
+
 
 // --- Delete Modal ---
 function deleteMovie(tmdbId) {
@@ -132,6 +137,22 @@ function showToast(message) {
   }, 3500);
 }
 
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  const msg = document.getElementById("toastMsg");
+
+  msg.textContent = message;
+
+  toast.classList.remove("opacity-0", "translate-y-6", "scale-95", "pointer-events-none");
+  toast.classList.add("opacity-100", "translate-y-0", "scale-100");
+
+  setTimeout(() => {
+    toast.classList.remove("opacity-100", "translate-y-0", "scale-100");
+    toast.classList.add("opacity-0", "translate-y-6", "scale-95", "pointer-events-none");
+  }, 3500);
+}
+
 function verifyPasscode() {
   const input = document.getElementById("passcodeInput").value;
   const correctPasscode = "flixadmin";
@@ -152,38 +173,29 @@ const brokenAPI = "https://mvlink-backend-webservice.onrender.com/linkbroken";
 async function fetchBrokenLink(){
     const res = await fetch(`${brokenAPI}/get`);
     brokenReports = await res.json();
-    renderBrokenReports(brokenReports);
+    renderBrokenLinkSession(brokenReports);
 }
 
-function renderBrokenReports(reports) {
-  const table = document.getElementById("brokenLinksTable");
-  table.innerHTML = "";
 
-  reports.forEach(report => {
-    table.innerHTML += `
-      <tr class="border-b border-gray-700 hover:bg-gray-700 transition duration-200">
-        <td class="p-2">${report.tmdbId}</td>
-        <td class="p-2">${report.movieName}</td>
-        <td class="p-2">
-          <a href="${report.brokenLink}" target="_blank" class="text-red-400 underline hover:text-red-300">Broken Link</a>
-        </td>
-        <td class="p-2">${report.description || "-"}</td>
-        <td class="p-2">${report.ip || "-"}</td>
-        <td class="p-2">${report.location || "-"}</td>
-        <td class="p-2 flex gap-3">
-          <button class="text-green-500 hover:text-green-400" onclick='resolveBrokenLink(${report.tmdbId})'>
-            <i data-feather="check-circle"></i> Resolve
-          </button>
+function renderBrokenLinkSession(brokenReports) {
+  const brokenTable = document.getElementById("brokenLinksTable");
+  brokenReports.forEach((report) => {
+    brokenTable.innerHTML += `
+      <tr class="border-b border-gray-700">
+        <td class="p-3">${report.tmdbId}</td>
+        <td class="p-3">${report.movieName}</td>
+        <td class="p-3 break-all">${report.brokenLink}</td>
+        <td class="p-3">${report.description}</td>
+        <td class="p-3">${report.ip}</td>
+        <td class="p-3">${report.location}</td>
+        <td class="p-3">
+          <button class="text-sm bg-red-600 hover:bg-red-700 px-3 py-1 rounded">Fix</button>
         </td>
       </tr>
     `;
   });
-  feather.replace();
 }
 
-async function resolveBrokenLink(tmdbId) {
-  await fetch(`${brokenAPI}/resolve/${tmdbId}`, { method: "DELETE" });
-  fetchBrokenLink();
-}
+
 
 fetchBrokenLink();
