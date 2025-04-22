@@ -166,6 +166,8 @@ function doFixForBrokenLink(report){
       document.getElementById("resolution").value = movie.resolutionDesc;
       document.getElementById("fileSize").value = movie.fileSize;
       showToast(`You selected to fix movie ${report.movieName}`);
+    } else {
+      window.alert(`${report.movieName} was not in database already.`);
     }
   })
 }
