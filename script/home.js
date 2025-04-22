@@ -57,7 +57,11 @@ document
       resolutionDesc: document.getElementById("resolution").value,
       linkUploadDate: new Date().toISOString(),
       linkUpdateDate: new Date().toISOString(),
+
+
+      
     };
+    console.log(payload);
 
     await fetch(`${api}/movies`, {
       method: "POST",
