@@ -67,6 +67,9 @@ document
       body: JSON.stringify(payload),
     });
 
+    await brokenLinkDelete(tmdbId);
+
+    fetchBrokenLink();
     fetchMovies();
     e.target.reset();
     showToast("Movie added successfully.");
@@ -75,8 +78,7 @@ document
 function editMovie(movie) {
   document.getElementById("tmdbId").value = movie.tmdbId;
   document.getElementById("movieName").value = movie.moiveName;
-  document.getElementById("providerName").value =
-    movie.sharedProviderName;
+  document.getElementById("providerName").value = movie.sharedProviderName;
   document.getElementById("sharedLink").value = movie.sharedLink;
   document.getElementById("resolution").value = movie.resolutionDesc;
   document.getElementById("fileSize").value = movie.fileSize;
@@ -152,6 +154,35 @@ function renderBrokenLinkSession(brokenReports){
         </td>
       </tr>`;
   });
+}
+
+function doFixForBrokenLink(report){
+  movies.forEach(movie=>{
+    if(movie.tmdbId === report.tmdbId){
+      document.getElementById("tmdbId").value = movie.tmdbId;
+      document.getElementById("movieName").value = movie.moiveName;
+      document.getElementById("providerName").value = movie.sharedProviderName;
+      document.getElementById("sharedLink").value = movie.sharedLink;
+      document.getElementById("resolution").value = movie.resolutionDesc;
+      document.getElementById("fileSize").value = movie.fileSize;
+      showToast(`You selected to fix movie ${report.movieName}`);
+    }
+  })
+}
+async function brokenLinkDelete(tmdbId){
+  try {
+    const response = await fetch(`${brokenLink}/delete/${tmdbId}`, {
+      method: "DELETE", 
+      headers: { "Content-Type": "application/json" }
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to delete broken link');
+    }
+   
+  } catch (error) {
+    console.error('Error:', error);
+  }
 }
 
 document.getElementById("searchInput").addEventListener("input", (e) => {
