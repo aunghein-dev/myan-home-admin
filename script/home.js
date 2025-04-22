@@ -63,6 +63,8 @@ document
       linkUpdateDate: new Date().toISOString(),
     };
 
+    console.log(payload);
+
     await fetch(`${api}/movies`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -72,7 +74,7 @@ document
     fetchMovies();
     e.target.reset();
     showToast("Movie added successfully.");
-  });
+});
 
 function editMovie(movie) {
   document.getElementById("tmdbId").value = movie.tmdbId;
