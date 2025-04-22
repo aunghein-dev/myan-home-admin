@@ -172,6 +172,8 @@ let brokenReports = [];
 async function fetchBrokenLink(){
     const res = await fetch(`${brokenAPI}/get`);
     brokenReports = await res.json();
+    console.log(brokenReports);
+
     renderBrokenLinkSession(brokenReports);
 }
 
@@ -188,7 +190,7 @@ function renderBrokenLinkSession(brokenReports){
         <td class="p-3">${report.ip}</td>
         <td class="p-3">${report.location}</td>
         <td class="p-3">
-          <button class="text-sm bg-red-600 hover:bg-red-700 px-3 py-1 rounded">Fix</button>
+        <button class="text-sm bg-red-600 hover:bg-red-700 px-3 py-1 rounded">Fix</button>
         </td>
       </tr>
     `;
