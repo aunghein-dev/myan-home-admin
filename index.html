@@ -9,33 +9,32 @@
       rel="stylesheet"
     />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <link rel="icon" type="image/svg+xml" href="favicon.png" />
+    <link rel="icon" type="image/png" href="favicon.png" />
     <script src="https://unpkg.com/feather-icons"></script>
-    <link rel="stylesheet" href="style/home.css" />
+    <style>
+      body {
+        background-color: #141414;
+      }
+    </style>
   </head>
   <body class="bg-gray-900 text-white font-sans">
     <div class="container mx-auto p-6">
-      <!-- Logo and Title -->
+      <!-- Logo & Title -->
       <div class="flex flex-col items-center">
         <img
-          class="h-11 w-31 object-cover mb-4"
           src="images/logo.png"
           alt="Logo"
+          class="h-11 mb-4"
           style="width: 100px"
         />
-        <h3
-          class="text-3xl font-bold"
-          style="margin-bottom: 20px; margin-top: -20px"
-        >
-          Admin Panel
-        </h3>
+        <h3 class="text-3xl font-bold mb-4 -mt-4">Admin Panel</h3>
       </div>
 
-      <!-- Search Bar -->
+      <!-- Search -->
       <div class="mb-6">
         <input
-          type="text"
           id="searchInput"
+          type="text"
           placeholder="Search movies..."
           class="w-full p-2 rounded bg-gray-700 text-white"
         />
@@ -44,68 +43,68 @@
       <!-- Passcode Gate -->
       <div
         id="passcodeGate"
-        class="bg-gray-800 p-6 rounded-lg shadow-md mb-10 flex flex-col items-center justify-center"
+        class="bg-gray-800 p-6 rounded-lg shadow-md mb-10 flex flex-col items-center"
       >
         <h2 class="text-xl font-semibold mb-4 text-center">
           Enter Admin Passcode
         </h2>
         <input
-          type="password"
           id="passcodeInput"
+          type="password"
           placeholder="Enter passcode"
           class="p-2 rounded bg-gray-700 text-white w-full max-w-xs mb-4 text-center"
         />
         <button
           onclick="verifyPasscode()"
-          class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-semibold transition duration-200"
+          class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-semibold"
         >
           Unlock Form
         </button>
       </div>
 
-      <!-- Movie Entry Form -->
+      <!-- Movie Form -->
       <div
         id="movieFormSection"
-        class="bg-gray-800 p-6 rounded-lg shadow-md mb-10 hidden"
+        class="hidden bg-gray-800 p-6 rounded-lg shadow-md mb-10"
       >
         <h2 class="text-xl font-semibold mb-4">Add or Edit Movie</h2>
         <form id="movieForm" class="grid grid-cols-2 gap-4">
           <input
-            class="p-2 rounded bg-gray-700"
             type="number"
-            placeholder="TMDB ID"
             id="tmdbId"
+            placeholder="TMDB ID"
             required
+            class="p-2 rounded bg-gray-700"
           />
           <input
-            class="p-2 rounded bg-gray-700"
             type="text"
-            placeholder="Movie Name"
             id="movieName"
+            placeholder="Movie Name"
+            class="p-2 rounded bg-gray-700"
           />
           <input
-            class="p-2 rounded bg-gray-700"
             type="text"
-            placeholder="Provider Name"
             id="providerName"
+            placeholder="Provider Name"
+            class="p-2 rounded bg-gray-700"
           />
           <input
-            class="p-2 rounded bg-gray-700"
             type="url"
-            placeholder="Shared Link"
             id="sharedLink"
+            placeholder="Shared Link"
+            class="p-2 rounded bg-gray-700"
           />
           <input
-            class="p-2 rounded bg-gray-700"
             type="text"
-            placeholder="Resolution"
             id="resolution"
+            placeholder="Resolution"
+            class="p-2 rounded bg-gray-700"
           />
           <input
-            class="p-2 rounded bg-gray-700"
             type="text"
-            placeholder="File Size"
             id="fileSize"
+            placeholder="File Size"
+            class="p-2 rounded bg-gray-700"
           />
           <button
             type="submit"
@@ -116,7 +115,7 @@
         </form>
       </div>
 
-      <!-- Movie List Table -->
+      <!-- Movies Table -->
       <div class="bg-gray-800 p-6 rounded-lg shadow-md">
         <h2 class="text-xl font-semibold mb-4">Existing Movies</h2>
         <div class="overflow-x-auto w-full scrollbar-hide min-h-[400px]">
@@ -137,7 +136,7 @@
         </div>
       </div>
 
-      <!-- Broken Link Reports Panel -->
+      <!-- Broken Links -->
       <div class="bg-gray-800 p-6 rounded-lg shadow-md mt-10">
         <h2 class="text-xl font-semibold mb-4 text-red-400">
           Broken Link Reports
@@ -161,13 +160,13 @@
       </div>
     </div>
 
-    <!-- Toast Notification -->
+    <!-- Toast -->
     <div
       id="toast"
       class="fixed bottom-8 right-8 bg-[#e50914] text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-4 text-sm opacity-0 pointer-events-none transform translate-y-6 scale-95 transition-all duration-300 z-50"
     >
       <svg
-        class="w-5 h-5 text-white flex-shrink-0"
+        class="w-5 h-5"
         fill="none"
         stroke="currentColor"
         stroke-width="2"
@@ -179,11 +178,169 @@
           d="M13 16h-1v-4h-1m1-4h.01M12 20c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z"
         />
       </svg>
-      <span id="toastMsg" class="font-semibold tracking-wide leading-tight"
-        >Toast message goes here</span
-      >
+      <span id="toastMsg">Toast message goes here</span>
     </div>
 
-    <script src="script/home.js"></script>
+    <script>
+      const api = "https://mvlink-backend-webservice.onrender.com/mapi";
+      const brokenAPI =
+        "https://mvlink-backend-webservice.onrender.com/linkbroken";
+      let movies = [],
+        brokenReports = [];
+
+      async function fetchMovies() {
+        const res = await fetch(`${api}/movies`);
+        movies = await res.json();
+        renderMovies(movies);
+      }
+
+      function renderMovies(filtered = movies) {
+        const table = document.getElementById("movieTable");
+        table.innerHTML = "";
+        filtered.forEach((movie) => {
+          table.innerHTML += `
+            <tr class="border-b border-gray-700 hover:bg-gray-700 transition duration-200">
+              <td class="p-2">${movie.tmdbId}</td>
+              <td class="p-2">${movie.moiveName || "-"}</td>
+              <td class="p-2">${movie.sharedProviderName || "-"}</td>
+              <td class="p-2">${movie.resolutionDesc || "-"}</td>
+              <td class="p-2">${movie.fileSize || "-"}</td>
+              <td class="p-2 break-words max-w-xs">
+                <a href="${
+                  movie.sharedLink
+                }" target="_blank" class="text-blue-400 underline hover:text-blue-300">Link</a>
+              </td>
+              <td class="p-2 flex gap-3">
+                <button class="text-yellow-400 hover:text-yellow-300" onclick='editMovie(${JSON.stringify(
+                  movie
+                )})'>
+                  <i data-feather="edit"></i>
+                </button>
+                <button class="text-red-500 hover:text-red-400" onclick="deleteMovie(${
+                  movie.tmdbId
+                })">
+                  <i data-feather="trash-2"></i>
+                </button>
+              </td>
+            </tr>`;
+        });
+        feather.replace();
+      }
+
+      document
+        .getElementById("movieForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const payload = {
+            movieId: movies.length + 1,
+            moiveName: document.getElementById("movieName").value,
+            tmdbId: parseInt(document.getElementById("tmdbId").value),
+            sharedLink: document.getElementById("sharedLink").value,
+            sharedProviderName: document.getElementById("providerName").value,
+            fileSize: document.getElementById("fileSize").value,
+            resolutionDesc: document.getElementById("resolution").value,
+            linkUploadDate: new Date().toISOString(),
+            linkUpdateDate: new Date().toISOString(),
+          };
+
+          await fetch(`${api}/movies`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          fetchMovies();
+          e.target.reset();
+          showToast("Movie added successfully.");
+        });
+
+      function editMovie(movie) {
+        document.getElementById("tmdbId").value = movie.tmdbId;
+        document.getElementById("movieName").value = movie.moiveName;
+        document.getElementById("providerName").value =
+          movie.sharedProviderName;
+        document.getElementById("sharedLink").value = movie.sharedLink;
+        document.getElementById("resolution").value = movie.resolutionDesc;
+        document.getElementById("fileSize").value = movie.fileSize;
+        showToast("Edit mode: Update movie manually.");
+      }
+
+      async function deleteMovie(tmdbId) {
+        if (confirm("Are you sure you want to delete this movie?")) {
+          await fetch(`${api}/movies/${tmdbId}`, { method: "DELETE" });
+          fetchMovies();
+          showToast("Movie deleted.");
+        }
+      }
+
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        const msg = document.getElementById("toastMsg");
+        msg.textContent = message;
+        toast.classList.remove(
+          "opacity-0",
+          "translate-y-6",
+          "scale-95",
+          "pointer-events-none"
+        );
+        toast.classList.add("opacity-100", "translate-y-0", "scale-100");
+        setTimeout(() => {
+          toast.classList.remove("opacity-100", "translate-y-0", "scale-100");
+          toast.classList.add(
+            "opacity-0",
+            "translate-y-6",
+            "scale-95",
+            "pointer-events-none"
+          );
+        }, 3500);
+      }
+
+      function verifyPasscode() {
+        const input = document.getElementById("passcodeInput").value;
+        if (input === "flixadmin") {
+          document.getElementById("passcodeGate").classList.add("hidden");
+          document
+            .getElementById("movieFormSection")
+            .classList.remove("hidden");
+          showToast("🔓 Access granted");
+        } else {
+          showToast("❌ Incorrect passcode");
+        }
+      }
+
+      async function fetchBrokenLink() {
+        const res = await fetch(`${brokenAPI}/get`);
+        brokenReports = await res.json();
+        const brokenTable = document.getElementById("brokenLinksTable");
+        brokenTable.innerHTML = "";
+        brokenReports.forEach((report) => {
+          brokenTable.innerHTML += `
+            <tr class="border-b border-gray-700">
+              <td class="p-3">${report.tmdb_id}</td>
+              <td class="p-3">${report.movie_name}</td>
+              <td class="p-3 break-all">${report.broken_link}</td>
+              <td class="p-3">${report.description}</td>
+              <td class="p-3">${report.ip}</td>
+              <td class="p-3">${report.location}</td>
+              <td class="p-3">
+                <button class="text-sm bg-red-600 hover:bg-red-700 px-3 py-1 rounded" onclick="showToast('Fix action not implemented yet')">Fix</button>
+              </td>
+            </tr>`;
+        });
+      }
+
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        const query = e.target.value.toLowerCase();
+        const filtered = movies.filter(
+          (m) =>
+            m.moiveName?.toLowerCase().includes(query) ||
+            m.sharedProviderName?.toLowerCase().includes(query)
+        );
+        renderMovies(filtered);
+      });
+
+      fetchMovies();
+      fetchBrokenLink();
+    </script>
   </body>
 </html>
