@@ -150,24 +150,27 @@ function renderBrokenLinkSession(brokenReports){
         <td class="p-3">${report.ip}</td>
         <td class="p-3">${report.location}</td>
         <td class="p-3">
-          <button class="text-sm bg-red-600 hover:bg-red-700 px-3 py-1 rounded" onclick="doFixForBrokenLink(${report})">Fix</button>
+          <button class="text-sm bg-red-600 hover:bg-red-700 px-3 py-1 rounded" onclick="doFixForBrokenLink(${report.tmdbId})">Fix</button>
         </td>
       </tr>`;
   });
 }
 
-function doFixForBrokenLink(report){
+function doFixForBrokenLink(tmdbId){
+  let selectedMovie = '';
+
   movies.forEach(movie=>{
-    if(movie.tmdbId === report.tmdbId){
-      document.getElementById("tmdbId").value = movie.tmdbId;
-      document.getElementById("movieName").value = movie.moiveName;
-      document.getElementById("providerName").value = movie.sharedProviderName;
-      document.getElementById("sharedLink").value = movie.sharedLink;
-      document.getElementById("resolution").value = movie.resolutionDesc;
-      document.getElementById("fileSize").value = movie.fileSize;
-      showToast(`You selected to fix movie ${report.movieName}`);
+    if(movie.tmdbId === tmdbId){
+      selectedMovie = movie;
+      document.getElementById("tmdbId").value = selectedMovie.tmdbId;
+      document.getElementById("movieName").value = selectedMovie.moiveName;
+      document.getElementById("providerName").value = selectedMovie.sharedProviderName;
+      document.getElementById("sharedLink").value = selectedMovie.sharedLink;
+      document.getElementById("resolution").value = selectedMovie.resolutionDesc;
+      document.getElementById("fileSize").value = selectedMovie.fileSize;
+      showToast(`You selected to fix movie ${selectedMovie.movieName}`);
     } else {
-      window.alert(`${report.movieName} was not in database already.`);
+      window.alert(`${selectedMovie.movieName} was not in database already.`);
     }
   })
 }
