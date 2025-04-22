@@ -131,6 +131,16 @@ button i {
     scrollbar-width: none;
   }
 
+  /* Add custom styles here */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 
   body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
