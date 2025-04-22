@@ -180,5 +180,10 @@ document
     closeDeleteModal();
   });
 
+
+  function clearForm() {
+    document.getElementById("movieForm").reset();
+  }
+
 fetchMovies();
 fetchBrokenLink();

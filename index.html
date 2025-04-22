@@ -61,45 +61,55 @@
       </div>
 
       <!-- Movie Form -->
-      <div id="movieFormSection" class="hidden card mb-10">
+      <div id="movieFormSection" class="hidden card mb-10 relative">
         <h2 class="text-xl font-semibold mb-4">Add or Edit Movie</h2>
+
+        <!-- Clear Inputs Button at the Top-Right -->
+        <button
+          type="button"
+          onclick="clearForm()"
+          class="absolute top-4 right-4 bg-gray-600 hover:bg-gray-500 py-2 px-4 rounded text-white"
+        >
+          Clear
+        </button>
+
         <form id="movieForm" class="grid grid-cols-2 gap-4">
           <input
             type="number"
             id="tmdbId"
             placeholder="TMDB ID"
             required
-            class="p-3 rounded bg-gray-800"
+            class="p-3 rounded bg-gray-800 text-white border border-gray-600 focus:border-primary"
           />
           <input
             type="text"
             id="movieName"
             placeholder="Movie Name"
-            class="p-3 rounded bg-gray-800"
+            class="p-3 rounded bg-gray-800 text-white border border-gray-600 focus:border-primary"
           />
           <input
             type="text"
             id="providerName"
             placeholder="Provider Name"
-            class="p-3 rounded bg-gray-800"
+            class="p-3 rounded bg-gray-800 text-white border border-gray-600 focus:border-primary"
           />
           <input
             type="url"
             id="sharedLink"
             placeholder="Shared Link"
-            class="p-3 rounded bg-gray-800"
+            class="p-3 rounded bg-gray-800 text-white border border-gray-600 focus:border-primary"
           />
           <input
             type="text"
             id="resolution"
             placeholder="Resolution"
-            class="p-3 rounded bg-gray-800"
+            class="p-3 rounded bg-gray-800 text-white border border-gray-600 focus:border-primary"
           />
           <input
             type="text"
             id="fileSize"
             placeholder="File Size"
-            class="p-3 rounded bg-gray-800"
+            class="p-3 rounded bg-gray-800 text-white border border-gray-600 focus:border-primary"
           />
           <button
             type="submit"
@@ -119,7 +129,7 @@
             <thead>
               <tr class="text-white bg-[#1c1c1c]">
                 <th class="p-3">ID</th>
-                <th class="p-3">Name</th>
+                <th class="p-3">Movie</th>
                 <th class="p-3">Provider</th>
                 <th class="p-3">Resolution</th>
                 <th class="p-3">Size</th>
@@ -141,9 +151,9 @@
           <table class="w-full table-auto text-left min-w-[900px]">
             <thead>
               <tr class="text-white bg-[#1c1c1c]">
-                <th class="p-3">TMDB ID</th>
-                <th class="p-3">Movie Name</th>
-                <th class="p-3">Broken Link</th>
+                <th class="p-3">ID</th>
+                <th class="p-3">Movie</th>
+                <th class="p-3">Dead-Link</th>
                 <th class="p-3">Description</th>
                 <th class="p-3">IP</th>
                 <th class="p-3">Location</th>
