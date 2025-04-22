@@ -126,22 +126,22 @@ function verifyPasscode() {
 
 async function fetchBrokenLink() {
   const res = await fetch(`${brokenAPI}/get`);
-  brokenReports = await res.json();
+  const brokenReports = await res.json();
   console.log(brokenReports);
   
   renderBrokenLinkSession(brokenReports);
 }
 
-
 function renderBrokenLinkSession(brokenReports){
   const brokenTable = document.getElementById("brokenLinksTable");
   brokenTable.innerHTML = "";
+  
   brokenReports.forEach((report) => {
     brokenTable.innerHTML += `
       <tr class="border-b border-gray-700">
-        <td class="p-3">${report.tmdb_id}</td>
-        <td class="p-3">${report.movie_name}</td>
-        <td class="p-3 break-all">${report.broken_link}</td>
+        <td class="p-3">${report.tmdbId}</td>  <!-- Changed to tmdbId -->
+        <td class="p-3">${report.movieName}</td>  <!-- Changed to movieName -->
+        <td class="p-3 break-all">${report.brokenLink}</td>  <!-- Changed to brokenLink -->
         <td class="p-3">${report.description}</td>
         <td class="p-3">${report.ip}</td>
         <td class="p-3">${report.location}</td>
