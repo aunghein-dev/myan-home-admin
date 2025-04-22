@@ -156,24 +156,23 @@ function renderBrokenLinkSession(brokenReports){
   });
 }
 
-function doFixForBrokenLink(tmdbId){
-  let selectedMovie = '';
+function doFixForBrokenLink(tmdbId) {
+  const selectedMovie = movies.find(movie => movie.tmdbId === tmdbId);
 
-  movies.forEach(movie=>{
-    if(movie.tmdbId === tmdbId){
-      selectedMovie = movie;
-      document.getElementById("tmdbId").value = selectedMovie.tmdbId;
-      document.getElementById("movieName").value = selectedMovie.moiveName;
-      document.getElementById("providerName").value = selectedMovie.sharedProviderName;
-      document.getElementById("sharedLink").value = selectedMovie.sharedLink;
-      document.getElementById("resolution").value = selectedMovie.resolutionDesc;
-      document.getElementById("fileSize").value = selectedMovie.fileSize;
-      showToast(`You selected to fix movie ${selectedMovie.movieName}`);
-    } else {
-      window.alert(`${selectedMovie.movieName} was not in database already.`);
-    }
-  })
+  if (selectedMovie) {
+    document.getElementById("tmdbId").value = selectedMovie.tmdbId;
+    document.getElementById("movieName").value = selectedMovie.moiveName;
+    document.getElementById("providerName").value = selectedMovie.sharedProviderName;
+    document.getElementById("sharedLink").value = selectedMovie.sharedLink;
+    document.getElementById("resolution").value = selectedMovie.resolutionDesc;
+    document.getElementById("fileSize").value = selectedMovie.fileSize;
+
+    showToast(`You selected to fix movie ${selectedMovie.movieName}`);
+  } else {
+    window.alert(`Movie with TMDB ID ${tmdbId} was not found in database.`);
+  }
 }
+
 async function brokenLinkDelete(tmdbId){
   try {
     const response = await fetch(`${brokenLink}/delete/${tmdbId}`, {
