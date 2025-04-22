@@ -180,25 +180,25 @@ async function fetchBrokenLink(){
 }
 
 
-function renderBrokenLinkSession(brokenReports){
+function renderBrokenLinkSession(brokenReports) {
   const brokenTable = document.getElementById("brokenLinksTable");
   brokenReports.forEach((report) => {
     brokenTable.innerHTML += `
       <tr class="border-b border-gray-700">
-        <td class="p-3">${report.tmdb_id}</td>
-        <td class="p-3">${report.movie_name}</td>
-        <td class="p-3 break-all">${report.broken_link}</td>
+        <td class="p-3">${report.tmdbId}</td>
+        <td class="p-3">${report.movieName}</td>
+        <td class="p-3 break-all">${report.brokenLink}</td>
         <td class="p-3">${report.description}</td>
         <td class="p-3">${report.ip}</td>
         <td class="p-3">${report.location}</td>
         <td class="p-3">
-        <button class="text-sm bg-red-600 hover:bg-red-700 px-3 py-1 rounded">Fix</button>
+          <button class="text-sm bg-red-600 hover:bg-red-700 px-3 py-1 rounded">Fix</button>
         </td>
       </tr>
     `;
   });
-  
 }
+
 
 
 fetchBrokenLink();
