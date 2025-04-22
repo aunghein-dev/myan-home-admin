@@ -195,3 +195,6 @@ function renderBrokenLinkSession(brokenReports){
   });
   
 }
+
+
+fetchBrokenLink();
