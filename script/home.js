@@ -47,9 +47,13 @@ document
   .getElementById("movieForm")
   .addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    // Calculate the next available movieId
+    const movieId = Math.max(0, ...movies.map(movie => movie.movieId)) + 1;
+
     const payload = {
-      movieId: movies.length + 1,
-      moiveName: document.getElementById("movieName").value,
+      movieId: movieId, // Correct the syntax here
+      movieName: document.getElementById("movieName").value,
       tmdbId: parseInt(document.getElementById("tmdbId").value),
       sharedLink: document.getElementById("sharedLink").value,
       sharedProviderName: document.getElementById("providerName").value,
@@ -57,11 +61,7 @@ document
       resolutionDesc: document.getElementById("resolution").value,
       linkUploadDate: new Date().toISOString(),
       linkUpdateDate: new Date().toISOString(),
-
-
-      
     };
-    console.log(payload);
 
     await fetch(`${api}/movies`, {
       method: "POST",
