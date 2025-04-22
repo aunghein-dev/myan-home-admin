@@ -127,8 +127,6 @@ function verifyPasscode() {
 async function fetchBrokenLink() {
   const res = await fetch(`${brokenAPI}/get`);
   const brokenReports = await res.json();
-  console.log(brokenReports);
-  
   renderBrokenLinkSession(brokenReports);
 }
 
