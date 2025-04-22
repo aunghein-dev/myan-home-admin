@@ -78,7 +78,7 @@ function editMovie(movie) {
   document.getElementById("sharedLink").value = movie.sharedLink;
   document.getElementById("resolution").value = movie.resolutionDesc;
   document.getElementById("fileSize").value = movie.fileSize;
-  showToast("Edit mode: Update movie manually.");
+  showToast(`You selected to edit ${movie.moiveName}`);
 }
 
 async function deleteMovie(tmdbId) {
@@ -127,6 +127,13 @@ function verifyPasscode() {
 async function fetchBrokenLink() {
   const res = await fetch(`${brokenAPI}/get`);
   brokenReports = await res.json();
+  console.log(brokenReports);
+  
+  renderBrokenLinkSession(brokenReports);
+}
+
+
+function renderBrokenLinkSession(brokenReports){
   const brokenTable = document.getElementById("brokenLinksTable");
   brokenTable.innerHTML = "";
   brokenReports.forEach((report) => {
