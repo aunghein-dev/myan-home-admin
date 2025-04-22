@@ -47,8 +47,10 @@ document
   .getElementById("movieForm")
   .addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    const maxMovieId = Math.max(...movies.map(movie => movie.movieId));
     const payload = {
-      movieId: movies.length + 1,
+      movieId: maxMovieId + 1,
       moiveName: document.getElementById("movieName").value,
       tmdbId: parseInt(document.getElementById("tmdbId").value),
       sharedLink: document.getElementById("sharedLink").value,
