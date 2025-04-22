@@ -150,7 +150,7 @@ function renderBrokenLinkSession(brokenReports){
         <td class="p-3">${report.ip}</td>
         <td class="p-3">${report.location}</td>
         <td class="p-3">
-          <button class="text-sm bg-red-600 hover:bg-red-700 px-3 py-1 rounded" onclick="showToast('Fix action not implemented yet')">Fix</button>
+          <button class="text-sm bg-red-600 hover:bg-red-700 px-3 py-1 rounded" onclick="doFixForBrokenLink(${report})">Fix</button>
         </td>
       </tr>`;
   });
